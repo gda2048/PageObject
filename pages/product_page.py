@@ -43,12 +43,25 @@ class ProductPage(BasePage):
     def should_be_present_in_cart(self) -> None:
         assert self.is_element_present(
             *ProductPageLocators.PRODUCT_NAME), "Product name is not present"
-        assert self.is_element_present(
-            *ProductPageLocators.ALERT_ADDED_TO_CART
-        ), "No alert that a product has been added to cart"
+        self.alert_is_presented()
         alert_text = self.browser.find_element(
             *ProductPageLocators.ALERT_ADDED_TO_CART).text
         product_name = self.browser.find_element(
             *ProductPageLocators.PRODUCT_NAME).text
         assert product_name == alert_text, \
             f"The alert contains wrong product name: {alert_text} - {product_name}"
+
+    def alert_is_presented(self):
+        assert self.is_element_present(
+            *ProductPageLocators.ALERT_ADDED_TO_CART
+        ), "No alert that a product has been added to cart"
+
+    def alert_is_not_presented(self):
+        assert self.is_not_element_present(
+                *ProductPageLocators.ALERT_ADDED_TO_CART
+            ), "Alert that a product has been added to cart"
+
+    def alert_is_disappeared(self):
+        assert self.is_disappeared(
+                *ProductPageLocators.ALERT_ADDED_TO_CART
+            ), "Alert that a product has been added to cart"
