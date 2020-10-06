@@ -1,1 +1,6 @@
-login_link = 'http://selenium1py.pythonanywhere.com/en-gb/accounts/login/'
+MAIN_PAGE_LINK = 'http://selenium1py.pythonanywhere.com'
+LOGIN_LINK = f'{MAIN_PAGE_LINK}/accounts/login/'
+CATALOGUE_89_LINK = f'{MAIN_PAGE_LINK}/catalogue/the-age-of-the-pussyfoot_89/'
+CATALOGUE_95_LINK = f'{MAIN_PAGE_LINK}/catalogue/the-city-and-the-stars_95/'
+CATALOGUE_207_LINK = f'{MAIN_PAGE_LINK}/catalogue/coders-at-work_207/'
+CATALOGUE_209_LINK = f'{MAIN_PAGE_LINK}/catalogue/the-shellcoders-handbook_209/'
