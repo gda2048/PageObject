@@ -1,3 +1,5 @@
+import time
+
 import pytest
 
 from .pages.login_page import LoginPage
@@ -27,13 +29,30 @@ def test_guest_can_add_product_to_basket_coders_at_work(browser, link):
     page.should_be_present_in_cart()
 
 
-def test_guest_can_add_product_to_basket(browser):
-    link = 'http://selenium1py.pythonanywhere.com/catalogue/the-shellcoders-handbook_209/?promo=newYear'
-    page = ProductPage(browser, link)
-    page.open()
-    page.should_be_able_to_add_to_basket()
-    page.add_to_basket()
-    page.solve_quiz_and_get_code()
+@pytest.mark.to_basket_from_product
+class TestUserAddToBasketFromProductPage:
+    @pytest.fixture(scope="function", autouse=True)
+    def setup(self, browser):
+        link = 'http://selenium1py.pythonanywhere.com/accounts/login/'
+        login_page = LoginPage(browser, link)
+        login_page.open()
+        email = str(time.time()) + "@fakemail.org"
+        login_page.register_new_user(email, 'passwordWOW23')
+        login_page.should_be_authorized_user()
+
+    def test_user_can_add_product_to_basket(self, browser):
+        link = 'http://selenium1py.pythonanywhere.com/catalogue/the-shellcoders-handbook_209/?promo=newYear'
+        page = ProductPage(browser, link)
+        page.open()
+        page.should_be_able_to_add_to_basket()
+        page.add_to_basket()
+        page.solve_quiz_and_get_code()
+
+    def test_user_cant_see_success_message(self, browser):
+        link = 'http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/'
+        page = ProductPage(browser, link)
+        page.open()
+        page.alert_is_not_presented()
 
 
 @pytest.mark.xfail
@@ -42,13 +61,6 @@ def test_guest_cant_see_success_message_after_adding_product_to_basket(browser):
     page = ProductPage(browser, link)
     page.open()
     page.add_to_basket()
-    page.alert_is_not_presented()
-
-
-def test_guest_cant_see_success_message(browser):
-    link = 'http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/'
-    page = ProductPage(browser, link)
-    page.open()
     page.alert_is_not_presented()
 
 
